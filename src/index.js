@@ -1,5 +1,3 @@
-import getTranslations from './lib/getTranslations.js'
-import Loqly from './lib/LoqlyWeb.js'
+import Loqly from './lib/Loqly.js'
 
 export default Loqly
-export { getTranslations }

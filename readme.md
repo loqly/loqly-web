@@ -12,12 +12,18 @@ npm install @loqly/web
 
 ## Setup
 
+To autoselect your elements, they should have a data attribute like so:
+
+```html
+<button data-t="auth.btn.login"></button>
+```
+
 ```js
 import Loqly from '@loqly/web'
 
 const loqly = new Loqly({
   apiKey: 'your-loqly-api-key',
-  defaultLocale: 'en', // defaults to 'en', is used as fallback language
+  defaultLocale: 'en', // optionsl, defaults to 'en', used as fallback language
 })
 
 // fetches your translations & translates the current page
@@ -27,16 +33,12 @@ await loqly.init()
 ### Updating the language
 
 ```js
-import { updateLanguage } from '@loqly/web'
-
 loqly.updateLanguage('de') // automatically translated the current page
 ```
 
 ### Manually translating elements
 
 ```js
-import { translatePage, translateElements, t } from '@loqly/web'
-
 // translating the whole page
 loqly.translatePage()
 
@@ -46,15 +48,15 @@ loqly.translateElement(paragraphs)
 
 // translating a single element
 const loginBtn = document.querySelector('button.login')
-loginBtn.textContent = t('auth.btn.login')
+loginBtn.textContent = loqly.t('auth.btn.login')
 ```
 
 ### Implementing into your custom functionality
 
-You can implement loqly into your existing system and just fetch your translations
+You can implement loqly into your existing system and just fetch your translations. No need to init loqly then.
 
 ```js
-import { getTranslations } from '@loqly/web'
+import Loqly from '@loqly/web'
 
-const translations = await getTranslations('your-loqly-api-key')
+const translations = await Loqly.getTranslations('your-loqly-api-key')
 ```

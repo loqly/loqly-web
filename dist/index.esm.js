@@ -1,32 +1,33 @@
-const c = async (s) => {
+const i = async (s) => {
   if (!s) throw new Error("API key is required");
-  const t = window.location.href.includes("http://localhost") ? "http://localhost:3000" : "https://api.loqly.dev", e = await fetch(`${t}/v1/strings`, {
+  const t = window.location.href.includes("http://localhost") ? "http://localhost:3000" : "https://api.loqly.dev", a = await fetch(`${t}/v1/strings`, {
     method: "GET",
     headers: {
       Authorization: `Apikey ${s}`,
       "Content-Type": "application/json"
     }
-  }), a = await e.json();
-  if (!e.ok || a.error)
-    throw new Error(a.error || "Something went wrong, please try again.");
-  return a.strings ? a.strings : {};
+  }), e = await a.json();
+  if (!a.ok || e.error)
+    throw new Error(e.error || "Something went wrong, please try again.");
+  return e.strings ? e.strings : {};
 };
-class u {
-  constructor({ apiKey: t, defaultLocale: e = "en" }) {
-    this.apiKey = t, this._defaultLocale = e, this._locale = e, this._translations = null, this._translatableElements = [];
+class o {
+  constructor({ apiKey: t, defaultLocale: a = "en" }) {
+    this.apiKey = t, this._defaultLocale = a, this._locale = a, this._translations = null, this._translatableElements = [];
   }
   // Initialize translations from your API
   async init() {
-    this._translations = await getTranslations(this.apiKey), this.cacheElements(), this.translateElements(this._translatableElements);
+    this._translations = await i(this.apiKey), this.cacheElements(), this.translateElements(this._translatableElements);
+  }
+  // Only fetch & return translations
+  static async getTranslations(t) {
+    return await i(t);
   }
   // Translation lookup with fallback
-  t(t, e = {}) {
-    var n, l, r, i;
-    const a = ((l = (n = this._translations) == null ? void 0 : n[t]) == null ? void 0 : l[this._locale]) || ((i = (r = this._translations) == null ? void 0 : r[t]) == null ? void 0 : i[this._defaultLocale]);
-    return a ? Object.keys(e).reduce(
-      (h, o) => h.replaceAll(`{{${o}}}`, e[o]),
-      a
-    ) : t;
+  t(t) {
+    var e, n, l, r;
+    const a = ((n = (e = this._translations) == null ? void 0 : e[t]) == null ? void 0 : n[this._locale]) || ((r = (l = this._translations) == null ? void 0 : l[t]) == null ? void 0 : r[this._defaultLocale]);
+    return a || t;
   }
   // Cache all elements with data-t attribute
   cacheElements() {
@@ -36,9 +37,9 @@ class u {
   }
   // Translate a list of elements
   translateElements(t) {
-    t.forEach((e) => {
-      const a = e.getAttribute("data-t");
-      a && (e.textContent = this.t(a));
+    t.forEach((a) => {
+      const e = a.getAttribute("data-t");
+      e && (a.textContent = this.t(e));
     });
   }
   // Translate the whole page (re-queries if cache is empty)
@@ -70,6 +71,5 @@ class u {
   }
 }
 export {
-  u as default,
-  c as getTranslations
+  o as default
 };

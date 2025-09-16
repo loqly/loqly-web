@@ -1,3 +1,5 @@
+import getTranslations from './getTranslations.js'
+
 export default class Loqly {
   constructor({ apiKey, defaultLocale = 'en' }) {
     this.apiKey = apiKey
@@ -14,6 +16,12 @@ export default class Loqly {
     this._translations = await getTranslations(this.apiKey)
     this.cacheElements()
     this.translateElements(this._translatableElements)
+  }
+
+  // Only fetch & return translations
+  static async getTranslations(apiKey) {
+    const translations = await getTranslations(apiKey)
+    return translations
   }
 
   // Translation lookup with fallback
