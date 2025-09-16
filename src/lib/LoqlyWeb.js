@@ -1,5 +1,3 @@
-import getTranslations from './src/getTranslations.js'
-
 export default class Loqly {
   constructor({ apiKey, defaultLocale = 'en' }) {
     this.apiKey = apiKey
@@ -19,18 +17,13 @@ export default class Loqly {
   }
 
   // Translation lookup with fallback
-  t(key, vars = {}) {
+  t(key) {
     const translation =
       this._translations?.[key]?.[this._locale] ||
       this._translations?.[key]?.[this._defaultLocale]
 
     if (!translation) return key
-
-    // Optional interpolation
-    return Object.keys(vars).reduce(
-      (str, k) => str.replaceAll(`{{${k}}}`, vars[k]),
-      translation
-    )
+    return translation
   }
 
   // Cache all elements with data-t attribute
@@ -85,5 +78,3 @@ export default class Loqly {
     this._defaultLocale = lang
   }
 }
-
-export { getTranslations }
