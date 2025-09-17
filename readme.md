@@ -6,8 +6,16 @@ For detailed documentation and guides, visit the [loqly documentation](https://l
 
 ## Installation
 
+Via command line
+
 ```bash
 npm install @loqly/web
+```
+
+Import as script
+
+```html
+<script src="https://unpkg.com/@loqly/web/dist/index.umd.js"></script>
 ```
 
 ## Setup
@@ -44,7 +52,7 @@ loqly.translatePage()
 
 // translating multiple elements
 const paragraphs = document.querySelectorAll('p')
-loqly.translateElement(paragraphs)
+loqly.translateElements(paragraphs)
 
 // translating a single element
 const loginBtn = document.querySelector('button.login')

@@ -1,6 +1,6 @@
 {
   "name": "@loqly/web",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "The loqly web package helps you using the loqly platform for internationalization and copy management.",
   "type": "module",
   "main": "./dist/index.cjs.js",
