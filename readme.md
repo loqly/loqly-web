@@ -6,13 +6,13 @@ For detailed documentation and guides, visit the [loqly documentation](https://l
 
 ## Installation
 
-Using npm
+Install via npm
 
 ```bash
 npm install @loqly/web
 ```
 
-Using a script tag
+Include via script tag
 
 ```html
 <script src="https://unpkg.com/@loqly/web/dist/index.umd.js"></script>
