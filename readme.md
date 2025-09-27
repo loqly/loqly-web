@@ -42,6 +42,7 @@ await loqly.init()
 
 ```js
 loqly.updateLanguage('de') // Automatically translates the current page
+loqly.locale = 'de' // Updating the language without auto translation
 ```
 
 ### Manually translating elements

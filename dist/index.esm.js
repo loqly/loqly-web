@@ -1,33 +1,48 @@
-const i = async (s) => {
-  if (!s) throw new Error("API key is required");
-  const t = window.location.href.includes("http://localhost") ? "http://localhost:3000" : "https://api.loqly.dev", a = await fetch(`${t}/v1/strings`, {
-    method: "GET",
-    headers: {
-      Authorization: `Apikey ${s}`,
-      "Content-Type": "application/json"
-    }
-  }), e = await a.json();
-  if (!a.ok || e.error)
-    throw new Error(e.error || "Something went wrong, please try again.");
-  return e.strings ? e.strings : {};
+const o = async (r, t = {}) => {
+  if (!r) throw new Error("API key is required");
+  let e = t;
+  try {
+    const s = window.location.href.includes("http://localhost") ? "http://localhost:3000" : "https://api.loqly.dev", n = await fetch(`${s}/v1/strings`, {
+      method: "GET",
+      headers: {
+        Authorization: `Apikey ${r}`,
+        "Content-Type": "application/json"
+      }
+    }), a = await n.json();
+    if (!n.ok || a.error)
+      throw new Error(a.error || "Something went wrong, please try again.");
+    a.strings && (e = a.strings);
+  } catch (s) {
+    throw new Error(s);
+  } finally {
+    return e;
+  }
 };
-class o {
-  constructor({ apiKey: t, defaultLocale: a = "en" }) {
-    this.apiKey = t, this._defaultLocale = a, this._locale = a, this._translations = null, this._translatableElements = [];
+function c(r, t) {
+  if (!t) return r;
+  const e = /\{([^\s{}]+)\}/g;
+  return [...r.matchAll(e)].map((n) => n[1]).reduce((n, a) => a in t ? n.replace(new RegExp(`\\{${a}\\}`, "g"), t[a]) : n, r);
+}
+class h {
+  constructor({ apiKey: t, defaultLocale: e = "en" }) {
+    this.apiKey = t, this._defaultLocale = e, this._locale = e, this._translations = null, this._translatableElements = [];
   }
   // Initialize translations from your API
   async init() {
-    this._translations = await i(this.apiKey), this.cacheElements(), this.translateElements(this._translatableElements);
+    this._translations = await o(this.apiKey), this.cacheElements(), this.translateElements(this._translatableElements);
   }
   // Only fetch & return translations
   static async getTranslations(t) {
-    return await i(t);
+    return await o(t);
+  }
+  static interpolateTranslation(t, e = null) {
+    return c(t, e);
   }
   // Translation lookup with fallback
-  t(t) {
-    var e, n, l, r;
-    const a = ((n = (e = this._translations) == null ? void 0 : e[t]) == null ? void 0 : n[this._locale]) || ((r = (l = this._translations) == null ? void 0 : l[t]) == null ? void 0 : r[this._defaultLocale]);
-    return a || t;
+  t(t, e = null) {
+    var n, a, l, i;
+    const s = ((a = (n = this._translations) == null ? void 0 : n[t]) == null ? void 0 : a[this._locale]) || ((i = (l = this._translations) == null ? void 0 : l[t]) == null ? void 0 : i[this._defaultLocale]);
+    return s ? c(s, e) : t;
   }
   // Cache all elements with data-t attribute
   cacheElements() {
@@ -37,9 +52,9 @@ class o {
   }
   // Translate a list of elements
   translateElements(t) {
-    t.forEach((a) => {
-      const e = a.getAttribute("data-t");
-      e && (a.textContent = this.t(e));
+    t.forEach((e) => {
+      const s = e.getAttribute("data-t");
+      s && (e.textContent = this.t(s));
     });
   }
   // Translate the whole page (re-queries if cache is empty)
@@ -61,7 +76,7 @@ class o {
     return this._locale;
   }
   set locale(t) {
-    this.updateLanguage(t);
+    this.locale = t;
   }
   get defaultLocale() {
     return this._defaultLocale;
@@ -71,5 +86,5 @@ class o {
   }
 }
 export {
-  o as default
+  h as default
 };

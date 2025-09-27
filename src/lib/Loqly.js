@@ -1,4 +1,5 @@
 import getTranslations from './getTranslations.js'
+import interpolateTranslation from './interpolateTranslation.js'
 
 export default class Loqly {
   constructor({ apiKey, defaultLocale = 'en' }) {
@@ -24,14 +25,18 @@ export default class Loqly {
     return translations
   }
 
+  static interpolateTranslation(translation, payload = null) {
+    return interpolateTranslation(translation, payload)
+  }
+
   // Translation lookup with fallback
-  t(key) {
+  t(key, payload = null) {
     const translation =
       this._translations?.[key]?.[this._locale] ||
       this._translations?.[key]?.[this._defaultLocale]
 
     if (!translation) return key
-    return translation
+    return interpolateTranslation(translation, payload)
   }
 
   // Cache all elements with data-t attribute
@@ -75,7 +80,7 @@ export default class Loqly {
   }
 
   set locale(lang) {
-    this.updateLanguage(lang)
+    this.locale = lang
   }
 
   get defaultLocale() {
