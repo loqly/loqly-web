@@ -2,13 +2,12 @@
 
 **loqly-web** is a JavaScript package that makes it easy to integrate [loqly](https://loqly.dev) for internationalization and copy management in your web projects.
 
-For detailed documentation and guides, visit the [loqly documentation](https://loqly.dev/documentation).
-
 ## Table of Contents
 
 - [Installation](#installation)
 - [Setup](#setup)
 - [Updating the language](#updating-the-language)
+- [Manual translation](#manually-translating-elements)
 - [Custom functionality](#using-loqly-in-custom-functionality)
 - [Interpolation](#interpolation)
 
