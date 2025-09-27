@@ -80,7 +80,7 @@ export default class Loqly {
   }
 
   set locale(lang) {
-    this.locale = lang
+    this._locale = lang
   }
 
   get defaultLocale() {

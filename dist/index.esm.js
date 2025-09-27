@@ -76,7 +76,7 @@ class h {
     return this._locale;
   }
   set locale(t) {
-    this.locale = t;
+    this._locale = t;
   }
   get defaultLocale() {
     return this._defaultLocale;
