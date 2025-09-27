@@ -1,7 +1,7 @@
 const c = async (r, t = null, e = {}) => {
   if (!r) throw new Error("API key is required");
   let a = "";
-  Object.keys(t).length > 0 && (t.projectIds && (a += `projectIds=${t.projectIds.join(",")}&`), t.namespaces && (a += `namespaces=${t.namespaces.join(",")}&`), t.languages && (a += `languages=${t.languages.join(",")}`));
+  t && Object.keys(t).length > 0 && (t.projectIds && (a += `projectIds=${t.projectIds.join(",")}&`), t.namespaces && (a += `namespaces=${t.namespaces.join(",")}&`), t.languages && (a += `languages=${t.languages.join(",")}`));
   let s = e;
   try {
     const n = window.location.href.includes("http://localhost") ? "http://localhost:3000" : "https://api.loqly.dev", i = await fetch(`${n}/v1/strings?${a}`, {

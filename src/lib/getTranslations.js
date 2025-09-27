@@ -2,7 +2,7 @@ export default async (apiKey, options = null, fallback = {}) => {
   if (!apiKey) throw new Error('API key is required')
 
   let query = ''
-  if (Object.keys(options).length > 0) {
+  if (options && Object.keys(options).length > 0) {
     if (options.projectIds)
       query += `projectIds=${options.projectIds.join(',')}&`
     if (options.namespaces)
