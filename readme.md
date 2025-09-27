@@ -4,6 +4,14 @@
 
 For detailed documentation and guides, visit the [loqly documentation](https://loqly.dev/documentation).
 
+## Table of Contents
+
+- [Installation](#installation)
+- [Setup](#setup)
+- [Updating the language](#updating-the-language)
+- [Custom functionality](#using-loqly-in-custom-functionality)
+- [Interpolation](#interpolation)
+
 ## Installation
 
 Install via npm
@@ -38,14 +46,14 @@ const loqly = new Loqly({
 await loqly.init()
 ```
 
-### Updating the language
+## Updating the language
 
 ```js
 loqly.updateLanguage('de') // Automatically translates the current page
 loqly.locale = 'de' // Updating the language without auto translation
 ```
 
-### Manually translating elements
+## Manually translating elements
 
 ```js
 // Translate the whole page
@@ -60,12 +68,42 @@ const loginBtn = document.querySelector('button.login')
 loginBtn.textContent = loqly.t('auth.btn.login')
 ```
 
-### Using loqly in custom functionality
+## Using loqly in custom functionality
 
 You can implement loqly into your existing system and just fetch your translations. No need to init loqly then.
 
 ```js
 import Loqly from '@loqly/web'
 
-const translations = await Loqly.getTranslations('your-loqly-api-key')
+const translations = await Loqly.getTranslations(
+  apiKey: 'your-loqly-api-key',
+
+  // Optional configurations
+  options: {
+    projectIds: ['website'],
+    namespaces: ['auth', 'error'],
+    languages: ['en', 'de']
+  },
+  fallback: {
+    "auth.btn.login": { en: 'Login', de: 'Anmelden' }
+  }
+)
+```
+
+## Interpolation
+
+You can easily insert dynamic content into your translations using our string interpolation feature.
+
+```js
+const count = document.querySelector('.count')
+count.textContent = loqly.t('User {user} has {count} new notifications', {
+  user: 'Alice',
+  count: 3,
+})
+```
+
+This will render as:
+
+```html
+<p class="count">User Alice has 3 new notifications</p>
 ```

@@ -1,5 +1,14 @@
-export default async (apiKey, fallback = {}) => {
+export default async (apiKey, options = null, fallback = {}) => {
   if (!apiKey) throw new Error('API key is required')
+
+  let query = ''
+  if (Object.keys(options).length > 0) {
+    if (options.projectIds)
+      query += `projectIds=${options.projectIds.join(',')}&`
+    if (options.namespaces)
+      query += `namespaces=${options.namespaces.join(',')}&`
+    if (options.languages) query += `languages=${options.languages.join(',')}`
+  }
 
   let strings = fallback
   try {
@@ -7,7 +16,7 @@ export default async (apiKey, fallback = {}) => {
       ? 'http://localhost:3000'
       : 'https://api.loqly.dev'
 
-    const response = await fetch(`${url}/v1/strings`, {
+    const response = await fetch(`${url}/v1/strings?${query}`, {
       method: 'GET',
       headers: {
         Authorization: `Apikey ${apiKey}`,

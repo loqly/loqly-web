@@ -1,48 +1,50 @@
-const o = async (r, t = {}) => {
+const c = async (r, t = null, e = {}) => {
   if (!r) throw new Error("API key is required");
-  let e = t;
+  let a = "";
+  Object.keys(t).length > 0 && (t.projectIds && (a += `projectIds=${t.projectIds.join(",")}&`), t.namespaces && (a += `namespaces=${t.namespaces.join(",")}&`), t.languages && (a += `languages=${t.languages.join(",")}`));
+  let s = e;
   try {
-    const s = window.location.href.includes("http://localhost") ? "http://localhost:3000" : "https://api.loqly.dev", n = await fetch(`${s}/v1/strings`, {
+    const n = window.location.href.includes("http://localhost") ? "http://localhost:3000" : "https://api.loqly.dev", i = await fetch(`${n}/v1/strings?${a}`, {
       method: "GET",
       headers: {
         Authorization: `Apikey ${r}`,
         "Content-Type": "application/json"
       }
-    }), a = await n.json();
-    if (!n.ok || a.error)
-      throw new Error(a.error || "Something went wrong, please try again.");
-    a.strings && (e = a.strings);
-  } catch (s) {
-    throw new Error(s);
+    }), l = await i.json();
+    if (!i.ok || l.error)
+      throw new Error(l.error || "Something went wrong, please try again.");
+    l.strings && (s = l.strings);
+  } catch (n) {
+    throw new Error(n);
   } finally {
-    return e;
+    return s;
   }
 };
-function c(r, t) {
+function o(r, t) {
   if (!t) return r;
   const e = /\{([^\s{}]+)\}/g;
-  return [...r.matchAll(e)].map((n) => n[1]).reduce((n, a) => a in t ? n.replace(new RegExp(`\\{${a}\\}`, "g"), t[a]) : n, r);
+  return [...r.matchAll(e)].map((s) => s[1]).reduce((s, n) => n in t ? s.replace(new RegExp(`\\{${n}\\}`, "g"), t[n]) : s, r);
 }
 class h {
   constructor({ apiKey: t, defaultLocale: e = "en" }) {
-    this.apiKey = t, this._defaultLocale = e, this._locale = e, this._translations = null, this._translatableElements = [];
+    this.apiKey = t, this.this._defaultLocale = e, this._locale = e, this._translations = null, this._translatableElements = [];
   }
   // Initialize translations from your API
   async init() {
-    this._translations = await o(this.apiKey), this.cacheElements(), this.translateElements(this._translatableElements);
+    this._translations = await c(this.apiKey), this.cacheElements(), this.translateElements(this._translatableElements);
   }
   // Only fetch & return translations
-  static async getTranslations(t) {
-    return await o(t);
+  static async getTranslations(t, e = null, a = {}) {
+    return await c(t, e, a);
   }
   static interpolateTranslation(t, e = null) {
-    return c(t, e);
+    return o(t, e);
   }
   // Translation lookup with fallback
   t(t, e = null) {
-    var n, a, l, i;
-    const s = ((a = (n = this._translations) == null ? void 0 : n[t]) == null ? void 0 : a[this._locale]) || ((i = (l = this._translations) == null ? void 0 : l[t]) == null ? void 0 : i[this._defaultLocale]);
-    return s ? c(s, e) : t;
+    var s, n, i, l;
+    const a = ((n = (s = this._translations) == null ? void 0 : s[t]) == null ? void 0 : n[this._locale]) || ((l = (i = this._translations) == null ? void 0 : i[t]) == null ? void 0 : l[this._defaultLocale]);
+    return o(a || t, e);
   }
   // Cache all elements with data-t attribute
   cacheElements() {
@@ -53,8 +55,8 @@ class h {
   // Translate a list of elements
   translateElements(t) {
     t.forEach((e) => {
-      const s = e.getAttribute("data-t");
-      s && (e.textContent = this.t(s));
+      const a = e.getAttribute("data-t");
+      a && (e.textContent = this.t(a));
     });
   }
   // Translate the whole page (re-queries if cache is empty)
